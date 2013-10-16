@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<polymer-element name="logger-ui">
+  <template>
+    <style>
+     #loggerbox {
+       //width:90%; 
+       //height:100px; 
+       min-height: 50px;
+       max-width:100%;
+       border:1px solid #c0c0c0;
+       overflow:auto;
+       background-color:#f0f0f0;
+       color:#606060;
+       padding: 5px;
+       margin: 10px;
+       font-size: small;
+     }
+
+     #settingsbox {
+       max-width:100%;
+       border:1px solid #c0c0c0;
+       overflow:auto;
+       background-color:#f0f0f0;
+       color:#606060;
+       padding: 5px;
+       margin: 10px;
+       font-size: small;
+     }
+
+     .loggerline {
+       margin:0px;
+       padding:0px;
+     }
+     
+     #filteredLoggerBox {
+      background-color:#ffffff;
+       max-width:100%;
+       border:1px solid #c0c0c0;
+       overflow:auto;
+       color:#606060;
+       padding: 5px;
+       margin: 10px;
+       font-size: small;
+      
+     }
+     
+    </style>
+     
+    <div id="settingsbox" >
+      <label for="disableSearch">Disable:</label>
+      <input id="disableSearch" type="checkbox" checked="{{isSearchDisabled}}" on-change="filterHandler">
+      
+      <input id="search" type="search" name="logsearch" on-keyup="filterHandler" value="{{filterValue}}" disabled?="{{isSearchDisabled}}">
+      
+      <label for="searchRegex">Use RegEx:</label>
+      <input id="searchRegex" type="checkbox" disabled?="{{isSearchDisabled}}" on-change="filterHandler">
+      
+      <label>Show log levels:</label>
+      
+<!--       <label for="FINEST">Finest:</label> -->
+      <input id="FINEST" title="FINEST" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="FINER">Finer:</label> -->
+      <input id="FINER" title="FINER" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="FINE">Fine:</label> -->
+      <input id="FINE" title="FINE" type="checkbox" checked="checked"  on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="CONFIG">Config:</label> -->
+      <input id="CONFIG" title="CONFIG" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="INFO">Info:</label> -->
+      <input id="INFO" title="INFO" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="WARNING">Warning:</label> -->
+      <input id="WARNING" title="WARNING" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="SEVERE">Severe:</label> -->
+      <input id="SEVERE" title="SEVERE" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      
+<!--       <label for="SHOUT">Shout:</label> -->
+      <input id="SHOUT" title="SHOUT" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+      <span title="RegEx NOT example">^((?!example).)*$</span>
+    </div>
+
+    <template if="{{!isSearchDisabled}}">
+      <div id="filteredLoggerBox">      
+        <template repeat="{{filteredMessages}}">
+          <template if="{{show}}">
+            <pre class="loggerline">{{message}}</pre>
+          </template>
+        </template>
+      </div>
+    </template>
+
+    <div id="loggerbox" >     
+      <template repeat="{{message in messages}}">
+       
+        <pre class="loggerline">{{message}}</pre>
+     
+      </template>
+    </div>
+  </template>
+  <script type="application/dart" src="logger_ui.dart"></script>  
+</polymer-element>   
