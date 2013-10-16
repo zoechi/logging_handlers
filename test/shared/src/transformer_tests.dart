@@ -50,9 +50,10 @@ runStringTransformerTests() {
     var logRecord = new LogRecord(Level.INFO, 
         message, 
         loggerName, 
-        time, 
-        exception,
-        "Exception text");
+        //time, 
+        exception // ,
+        //"Exception text"
+        );
     
     var impl = new StringTransformer();
     expect(impl.transform(logRecord),
@@ -71,9 +72,9 @@ runStringTransformerTests() {
     var logRecordWithException = new LogRecord(Level.FINEST, 
         message, 
         loggerName, 
-        time, 
-        exception,
-        "Exception text");
+//        time, 
+        exception); //,
+//        "Exception text");
     
     var impl = new StringTransformer(messageFormat: "%s %t %n[%p]: %m", exceptionFormatSuffix: " %e %x", timestampFormat: "dd-MM-yyyy");
     // Note - this prints the exception message with a sequence number.
@@ -118,9 +119,9 @@ runMapTransformerTests() {
     var logRecord = new LogRecord(Level.INFO, 
         message, 
         loggerName, 
-        time, 
-        exception,
-        "Exception text");
+//        time, 
+        exception); //,
+        //"Exception text");
     
     var impl = new MapTransformer();
     var map = impl.transform(logRecord); // convert the logRecord to a map    
@@ -131,7 +132,7 @@ runMapTransformerTests() {
     expect(map2["loggerName"], equals(logRecord.loggerName));
     expect(map2["level"], equals(logRecord.level.name));
     expect(map2["sequenceNumber"], equals(logRecord.sequenceNumber));
-    expect(map2["exceptionText"], equals(logRecord.exceptionText));
+    expect(map2["exceptionText"], equals(logRecord.exception.toString())); // TODO logRecord.exceptionText doesn't exist
     expect(map2["exception"], equals(logRecord.exception.toString()));
     expect(map2["time"], equals(logRecord.time.toString()));
   });  

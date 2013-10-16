@@ -94,8 +94,8 @@ class StringTransformer implements LogRecordTransformer {
           case EXCEPTION: 
             if (logRecord.exception != null) return logRecord.exception.toString();
             break;
-          case EXCEPTION_TEXT:
-            return logRecord.exceptionText;
+          //case EXCEPTION_TEXT:
+          //  return logRecord.exception.toString();
         }
       }
 

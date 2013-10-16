@@ -15,7 +15,7 @@ class MapTransformer implements LogRecordTransformer {
     map["time"] = logRecord.time != null ? logRecord.time.toString() : null;
     map["sequenceNumber"] = logRecord.sequenceNumber;
     map["loggerName"] = logRecord.loggerName;
-    map["exceptionText"] = logRecord.exceptionText;
+    //map["exceptionText"] = logRecord.exception.toString();
     map["exception"] = logRecord.exception != null ? logRecord.exception.toString() : null;    
     return map;
   }

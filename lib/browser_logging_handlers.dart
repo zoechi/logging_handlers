@@ -14,7 +14,8 @@ export 'logging_handlers_shared.dart';
  */
 void attachXLoggerUi([bool addPrintHandler=true]) {
   Timer.run(() {
-    var loggerComponents = queryAll("div[is=x-loggerui]");
+    window.console.error("attachXLoggerUi");
+    var loggerComponents = queryAll("div[is=x-loggerui],logger-ui");
     print(loggerComponents);
     var listener = Logger.root.onRecord.asBroadcastStream();
     loggerComponents.forEach((component) {

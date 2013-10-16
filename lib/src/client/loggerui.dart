@@ -1,6 +1,6 @@
 library loggerui;
 
-import 'dart:html';
+//import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watcher;
 import 'package:logging/logging.dart';
