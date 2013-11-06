@@ -1,7 +1,7 @@
 part of logging_handlers_shared;
 
 /**
- * Transforms a Log Record into a Map that can be stringified by JSON.stringify()  
+ * Transforms a Log Record into a Map that can be stringified by JSON.encode()  
  */
 class MapTransformer implements LogRecordTransformer {
   
@@ -16,7 +16,7 @@ class MapTransformer implements LogRecordTransformer {
     map["sequenceNumber"] = logRecord.sequenceNumber;
     map["loggerName"] = logRecord.loggerName;
     //map["exceptionText"] = logRecord.exception.toString();
-    map["exception"] = logRecord.exception != null ? logRecord.exception.toString() : null;    
+    map["exception"] = logRecord.error != null ? logRecord.error.toString() : null;    
     return map;
   }
 }

@@ -2,7 +2,7 @@ library browser;
 
 import 'dart:html';
 import 'dart:async'; 
-import 'logging_handlers_shared.dart';
+import 'logging_handlers_shared.dart' as lh;
 import 'package:logging/logging.dart';
 export 'logging_handlers_shared.dart';
 
@@ -15,7 +15,7 @@ export 'logging_handlers_shared.dart';
 void attachXLoggerUi([bool addPrintHandler=true]) {
   Timer.run(() {
     window.console.error("attachXLoggerUi");
-    var loggerComponents = queryAll("div[is=x-loggerui],logger-ui");
+    var loggerComponents = querySelectorAll("div[is=x-loggerui],logger-ui");
     print(loggerComponents);
     var listener = Logger.root.onRecord.asBroadcastStream();
     loggerComponents.forEach((component) {
@@ -24,6 +24,6 @@ void attachXLoggerUi([bool addPrintHandler=true]) {
     	});
     
     //optionally attach a default print handler
-    if (addPrintHandler) listener.listen(new PrintHandler());
+    if (addPrintHandler) listener.listen(new lh.PrintHandler());
   });
 }

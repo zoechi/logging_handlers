@@ -1,6 +1,6 @@
 library loggerui;
 
-//import 'dart:html';
+import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watcher;
 import 'package:logging/logging.dart';
@@ -26,5 +26,22 @@ class LoggerUi extends WebComponent implements BaseLoggingHandler {
     watcher.dispatch();
     if (logRecord.loggerName != "loggerui") _logger.finest("logrecord added");
   }
-  
+
+  void addEventListener(String type, listener(Event event), [bool useCapture]) {
+    super.addEventListener(type, listener, useCapture);
+  }
+
+  Document get ownerDocument => super.ownerDocument;
+
+  Element querySelector(String selectors) {
+    return super.querySelector(selectors);
+  }
+
+  ElementList querySelectorAll(String selectors) {
+    return super.querySelectorAll(selectors);
+  }
+
+  void removeEventListener(String type, listener(Event event), [bool useCapture]) {
+    super.removeEventListener(type, listener, useCapture);
+  }
 }

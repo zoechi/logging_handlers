@@ -32,11 +32,52 @@
        margin:0px;
        padding:0px;
      }
+
+     .FINEST {
+       color:#606060;
+       background-color:#f0f0f0;
+     }
+
+     .FINER {
+       color:#404040;
+       background-color:#e0e0e0;
+     }
+
+     .FINE {
+       color:#202020;
+       background-color:#d0d0d0;
+     }
+     
+     .CONFIG {
+       color:#202020;
+       background-color:#ffffff;
+     }
+     
+     .INFO {
+     color:#202020;
+       background-color:#fffff0;
+     }
+     
+     .WARNING {
+      color:#202020;
+       background-color:#70ffff;
+     }
+     
+     .SEVERE {
+     color:#202020;
+       background-color:#ffc0c0;
+     }
+     
+     .SHOUT {
+       color:#0000ff;
+       background-color:#ff7070;
+     }
+     
      
      #filteredLoggerBox {
       background-color:#ffffff;
        max-width:100%;
-       border:1px solid #c0c0c0;
+       border:1px solid #f0c0c0;
        overflow:auto;
        color:#606060;
        padding: 5px;
@@ -46,61 +87,68 @@
      }
      
     </style>
-     
+    
     <div id="settingsbox" >
-      <label for="disableSearch">Disable:</label>
-      <input id="disableSearch" type="checkbox" checked="{{isSearchDisabled}}" on-change="filterHandler">
-      
-      <input id="search" type="search" name="logsearch" on-keyup="filterHandler" value="{{filterValue}}" disabled?="{{isSearchDisabled}}">
-      
-      <label for="searchRegex">Use RegEx:</label>
-      <input id="searchRegex" type="checkbox" disabled?="{{isSearchDisabled}}" on-change="filterHandler">
-      
-      <label>Show log levels:</label>
-      
-<!--       <label for="FINEST">Finest:</label> -->
-      <input id="FINEST" title="FINEST" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="FINER">Finer:</label> -->
-      <input id="FINER" title="FINER" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="FINE">Fine:</label> -->
-      <input id="FINE" title="FINE" type="checkbox" checked="checked"  on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="CONFIG">Config:</label> -->
-      <input id="CONFIG" title="CONFIG" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="INFO">Info:</label> -->
-      <input id="INFO" title="INFO" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="WARNING">Warning:</label> -->
-      <input id="WARNING" title="WARNING" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="SEVERE">Severe:</label> -->
-      <input id="SEVERE" title="SEVERE" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      
-<!--       <label for="SHOUT">Shout:</label> -->
-      <input id="SHOUT" title="SHOUT" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
-      <span title="RegEx NOT example">^((?!example).)*$</span>
-    </div>
-
-    <template if="{{!isSearchDisabled}}">
-      <div id="filteredLoggerBox">      
-        <template repeat="{{filteredMessages}}">
-          <template if="{{show}}">
-            <pre class="loggerline">{{message}}</pre>
+      <label for="enableLog">Show log:</label>
+      <input id="enableLog" type="checkbox" checked="{{isLogEnabled}}" >
+    </div> 
+    
+    <template if="{{isLogEnabled}}">
+      <div id="settingsbox">
+        <label for="disableSearch">Disable filter:</label>
+        <input id="disableSearch" type="checkbox" checked="{{isSearchDisabled}}" on-change="filterHandler">
+        
+        <input id="search" type="search" name="logsearch" on-keyup="filterHandler" value="{{defaultFilter}}" disabled?="{{isSearchDisabled}}">
+        
+        <label for="searchRegex">Use RegEx:</label>
+        <input id="searchRegex" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+        <label>Show log levels:</label>
+        
+  <!--       <label for="FINEST">Finest:</label> -->
+        <input id="FINEST" title="FINEST" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="FINER">Finer:</label> -->
+        <input id="FINER" title="FINER" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="FINE">Fine:</label> -->
+        <input id="FINE" title="FINE" type="checkbox" checked="checked"  on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="CONFIG">Config:</label> -->
+        <input id="CONFIG" title="CONFIG" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="INFO">Info:</label> -->
+        <input id="INFO" title="INFO" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="WARNING">Warning:</label> -->
+        <input id="WARNING" title="WARNING" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="SEVERE">Severe:</label> -->
+        <input id="SEVERE" title="SEVERE" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        
+  <!--       <label for="SHOUT">Shout:</label> -->
+        <input id="SHOUT" title="SHOUT" type="checkbox" checked="checked" on-change="filterHandler" disabled?="{{isSearchDisabled}}">
+        <span title="RegEx NOT example">^((?!polymer).)*$</span>
+      </div>
+  
+      <template if="{{!isSearchDisabled}}">
+        <div id="filteredLoggerBox">      
+          <template repeat="{{filteredMessages}}">
+            <template if="{{show}}">
+              <pre class="loggerline {{logRecord.level}}">{{message}}</pre>
+            </template>
           </template>
+        </div>
+      </template>
+  
+      <div id="loggerbox" >     
+        <template repeat="{{message in messages}}">
+         
+          <pre class="loggerline {{message.logRecord.level}}">{{message.message}}</pre>
+       
         </template>
       </div>
     </template>
-
-    <div id="loggerbox" >     
-      <template repeat="{{message in messages}}">
-       
-        <pre class="loggerline">{{message}}</pre>
-     
-      </template>
-    </div>
   </template>
   <script type="application/dart" src="logger_ui.dart"></script>  
 </polymer-element>   

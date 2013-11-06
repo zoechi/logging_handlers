@@ -62,9 +62,7 @@ class StringTransformer implements LogRecordTransformer {
    * [exceptionFormatSuffix] and [timestampFormat] pattern.
    */
   String transform(LogRecord logRecord) {
-    var formatString = logRecord.exception == null ? 
-                                  messageFormat : 
-                                  messageFormat+exceptionFormatSuffix;
+    var formatString = messageFormat;
     
     // build the log string and return
     return formatString.replaceAllMapped(_regexp, (match) {
@@ -92,7 +90,7 @@ class StringTransformer implements LogRecordTransformer {
           case SEQ:
             return logRecord.sequenceNumber.toString();
           case EXCEPTION: 
-            if (logRecord.exception != null) return logRecord.exception.toString();
+            // if (logRecord.exception != null) return logRecord.exception.toString();
             break;
           //case EXCEPTION_TEXT:
           //  return logRecord.exception.toString();

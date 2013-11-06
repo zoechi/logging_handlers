@@ -5,15 +5,15 @@ import 'dart:async';
 import 'package:polymer/polymer.dart';
 import 'package:logging/logging.dart';
 import 'package:logging_handlers/logging_handlers_shared.dart';
-import "package:meta/meta.dart";
 
 @CustomTag("logger-ui")
 class LoggerUi extends PolymerElement implements BaseLoggingHandler {
   final _logger = new Logger("loggerui");
   
-  @observable bool isSearchDisabled = true;
+  @observable bool isSearchDisabled = false;
+  @observable bool isLogEnabled = false;
   
-  List<String> messages = new ObservableList<String>();
+  List<LogEntry> messages = new ObservableList<LogEntry>();
  
   List<LogRecord> logRecords = new List<LogRecord>();
 
@@ -23,9 +23,10 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
   
   String _oldFilterValue;
   String _filterValue = "";
+  @published String defaultFilter = r"^((?!polymer).)*$"; 
   Map<String,bool> showLogLevels = new Map<String,bool>();
   
-  bool _useRegex = false;
+  bool _useRegex = true;
   
 //  bool _showFinest = true;
 //  bool _showFiner = true;
@@ -36,7 +37,8 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
 //  bool _showSevere = true;
 //  bool _showShout = true;
   
-  LoggerUi() {
+  LoggerUi.created() : super.created() {
+    _filterValue = defaultFilter;
     transformer = new StringTransformer(messageFormat: "%t %n\t[%p] %m", exceptionFormatSuffix: "\n%e\n%x", timestampFormat:"HH:mm:ss.SSS");
     Logger.root.onRecord.asBroadcastStream().listen((e) => call(e));
     showLogLevels["FINEST"]=true;
@@ -47,12 +49,31 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
     showLogLevels["WARNING"]=true;
     showLogLevels["SEVERE"]=true;
     showLogLevels["SHOUT"]=true;
+    
+// only for testing purposes    
+//    Timer.run(() {
+//    _logger.finest("finest", transformer);
+//    _logger.finer("finer");
+//    _logger.fine("fine");
+//    _logger.config("config");
+//    _logger.info("info");
+//    _logger.warning("warning");
+//    _logger.severe("severe");
+//    _logger.shout("shout");
+//    });
   }
   
   @override
-  void created() {
-    super.created();
+  void enteredView() {
+    super.enteredView();
     
+    Timer.run((){
+      filteredMessages.forEach((m){
+        m.show =_showMessage(m); 
+      });
+      
+      notifyPropertyChange(#filteredMessages, null, null);
+    });
   }
   
   
@@ -60,16 +81,15 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
     if (logRecord.loggerName != "loggerui") {
       //_logger.finest("adding logrecord"); // don;t log our own records // leads to an exception - Uncaught Error: Bad state: Cannot fire new event. Controller is already firing an event
     }
+
     logRecords.add(logRecord);
     var m = transformer.transform(logRecord);
-    messages.insert(0, m);
+    var le = new LogEntry(m, logRecord);
+    messages.insert(0, le);
     
-    //if(filteredMessages.length < 20) {
-      var le = new LogEntry(m, logRecord);
-      le.show = _showMessage(le);
-      filteredMessages.insert(0, le);
-    //}
-    //watcher.dispatch();
+    le.show = _showMessage(le);
+    filteredMessages.insert(0, le);
+
     if (logRecord.loggerName != "loggerui") { 
       //_logger.finest("logrecord added"); // leads to an exception - Uncaught Error: Bad state: Cannot fire new event. Controller is already firing an event
     }
@@ -118,7 +138,8 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
         m.show =_showMessage(m); 
       });
       
-      notifyProperty(this, #filteredMessages);
+      
+      notifyPropertyChange(#filteredMessages, this.filteredMessages, this.filteredMessages);
     });
   }
   
@@ -152,7 +173,7 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
   }
 }
 
-class LogEntry extends Object with ObservableMixin {
+class LogEntry extends Object with Observable {
   String message;
   LogRecord logRecord;
   @observable bool show = true;
