@@ -40,7 +40,7 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
   LoggerUi.created() : super.created() {
     _filterValue = defaultFilter;
     transformer = new StringTransformer(messageFormat: "%t %n\t[%p] %m", exceptionFormatSuffix: "\n%e\n%x", timestampFormat:"HH:mm:ss.SSS");
-    Logger.root.onRecord.asBroadcastStream().listen((e) => call(e));
+    Logger.root.onRecord.asBroadcastStream().listen((e) => add(e));
     showLogLevels["FINEST"]=true;
     showLogLevels["FINER"]=true;
     showLogLevels["FINE"]=true;
@@ -77,7 +77,7 @@ class LoggerUi extends PolymerElement implements BaseLoggingHandler {
   }
   
   
-  void call(LogRecord logRecord) {
+  void add(LogRecord logRecord) {
     if (logRecord.loggerName != "loggerui") {
       //_logger.finest("adding logrecord"); // don;t log our own records // leads to an exception - Uncaught Error: Bad state: Cannot fire new event. Controller is already firing an event
     }

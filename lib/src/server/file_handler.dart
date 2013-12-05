@@ -11,7 +11,7 @@ class SyncFileLoggingHandler implements BaseLoggingHandler {
     _file = new File(filename);        
   }
   
-  call(LogRecord logRecord) {
+  add(LogRecord logRecord) {
     var f = _file.openSync(mode:FileMode.APPEND);
     f.writeStringSync(transformer.transform(logRecord) + "\n");
     f.closeSync();

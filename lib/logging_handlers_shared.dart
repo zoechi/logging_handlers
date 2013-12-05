@@ -97,8 +97,10 @@ class PrintHandler implements BaseLoggingHandler {
         exceptionFormatSuffix: exceptionFormatSuffix, 
         timestampFormat: timestampFormat);
   }
+
+  void call(LogRecord logRecord) => add(logRecord);
   
-  void call(LogRecord logRecord) {
+  void add(LogRecord logRecord) {
     printFunc(transformer.transform(logRecord));
   }
 }
@@ -110,5 +112,5 @@ class PrintHandler implements BaseLoggingHandler {
  */
 abstract class BaseLoggingHandler {
   LogRecordTransformer transformer;
-  void call(LogRecord logRecord);
+  void add(LogRecord logRecord);
 }

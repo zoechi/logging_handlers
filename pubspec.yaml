@@ -10,7 +10,6 @@ environment:
 
 dependencies:
   intl: any 
-  web_ui: any 
   polymer: any
   logging: any 
 

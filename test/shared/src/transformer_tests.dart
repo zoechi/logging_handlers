@@ -105,7 +105,7 @@ runMapTransformerTests() {
     expect(map2["loggerName"], equals(logRecord.loggerName));
     expect(map2["level"], equals(logRecord.level.name));
     expect(map2["sequenceNumber"], equals(logRecord.sequenceNumber));
-    expect(map2["exceptionText"], isNull);
+//    expect(map2["exceptionText"], isNull);
     expect(map2["exception"], isNull);
     expect(map2["time"], equals(logRecord.time.toString()));
     
@@ -132,7 +132,7 @@ runMapTransformerTests() {
     expect(map2["loggerName"], equals(logRecord.loggerName));
     expect(map2["level"], equals(logRecord.level.name));
     expect(map2["sequenceNumber"], equals(logRecord.sequenceNumber));
-    expect(map2["exceptionText"], equals(logRecord.error.toString())); // TODO logRecord.exceptionText doesn't exist
+//    expect(map2["exceptionText"], equals(logRecord.error.toString())); // logRecord.exceptionText doesn't exist anymore
     expect(map2["exception"], equals(logRecord.error.toString()));
     expect(map2["time"], equals(logRecord.time.toString()));
   });  
